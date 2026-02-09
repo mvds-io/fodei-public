@@ -1,4 +1,25 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+
+const screenshots = [
+  { src: '/screenshots/IMG_0331.PNG', alt: 'Hjemskjerm' },
+  { src: '/screenshots/IMG_0332.PNG', alt: 'Kartvisning' },
+  { src: '/screenshots/IMG_0333.PNG', alt: 'Listevisning' },
+  { src: '/screenshots/IMG_0334.PNG', alt: 'Informasjon' },
+  { src: '/screenshots/IMG_0335.PNG', alt: 'Rieteller' },
+];
+
 export default function PhoneMockup() {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % screenshots.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="relative mx-auto w-[280px]">
       {/* iPhone frame */}
@@ -6,17 +27,33 @@ export default function PhoneMockup() {
         {/* Notch */}
         <div className="absolute left-1/2 top-0 z-10 h-7 w-28 -translate-x-1/2 rounded-b-2xl bg-gray-900" />
 
-        {/* Screen area — replace the placeholder with an <img> later */}
-        <div className="relative aspect-[9/19.5] w-full overflow-hidden rounded-[2.25rem] bg-gradient-to-b from-rosa-100 to-rosa-50">
-          {/* Placeholder content — remove this when adding a screenshot */}
-          <div className="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-rosa-300 text-2xl font-bold text-white">
-              F
-            </div>
-            <p className="text-sm font-medium text-rosa-700">FødeiNorge</p>
-            <p className="text-xs text-rosa-500">Skjermbilde kommer</p>
-          </div>
+        {/* Screen area */}
+        <div className="relative aspect-[9/19.5] w-full overflow-hidden rounded-[2.25rem] bg-gray-900">
+          {screenshots.map((shot, i) => (
+            <img
+              key={shot.src}
+              src={shot.src}
+              alt={shot.alt}
+              className={`absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-700 ${
+                i === current ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          ))}
         </div>
+      </div>
+
+      {/* Dots indicator */}
+      <div className="mt-4 flex justify-center gap-2">
+        {screenshots.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            className={`h-2 w-2 rounded-full transition-colors ${
+              i === current ? 'bg-rosa-500' : 'bg-gray-300'
+            }`}
+            aria-label={`Skjermbilde ${i + 1}`}
+          />
+        ))}
       </div>
 
       {/* Side button (power) */}
