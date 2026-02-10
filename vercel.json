@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/admin", "destination": "https://fodei-admin-git-main-mvds-ios-projects.vercel.app/admin" },
+    { "source": "/admin/:path*", "destination": "https://fodei-admin-git-main-mvds-ios-projects.vercel.app/admin/:path*" }
+  ]
+}
